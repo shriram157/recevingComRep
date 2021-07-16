@@ -1,0 +1,948 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="zRecCompReport.controller.Home"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:v="sap.ui.comp.variants"
+	xmlns:smartVariantManagement="sap.ui.comp.smartvariants" xmlns:layout="sap.ui.layout" xmlns:table="sap.ui.table">
+	<f:DynamicPage id="dynamicPageId" headerExpanded="true">
+		<!-- DynamicPage Title -->
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{i18n>Title}"/>
+				</f:heading>
+				<f:actions>
+					<Text width="200px" id="idGetDate" text=""/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<!--<f:subheading text="{path:'DateModel>/secondDateValueDRS2'}"/>-->
+		<!-- DynamicPage Header -->
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<MessageStrip id="idPickingStrip" text="" showIcon="true" showCloseButton="true" visible="false"></MessageStrip>
+					<v:VariantManagement id="vm" select="onSelect" save="onSave" enabled="true" manage="onManage" showExecuteOnSelection="true"
+						showShare="false" variantItems="{LocalDataModel>/VariantSet}" initialSelectionKey="{LocalDataModel>/DefVar}" showSetAsDefault="true">
+						<v:variantItems>
+							<v:VariantItem text="{LocalDataModel>VariantName}" key="{LocalDataModel>VariantName}"></v:VariantItem>
+						</v:variantItems>
+					</v:VariantManagement>
+					<fb:FilterBar reset="onClear" showClearOnFB="true" clear="onClear" search="onSearch" useToolbar="true" showGoOnFB="true">
+						<fb:filterItems>
+							<fb:FilterItem name="A" label="Created On" partOfCurrentVariant="false" visibleInFilterBar="false">
+								<fb:control>
+									<!--<DateTimePicker change="onChangeDate" value="{path:'CreatedOn'}" valueFormat="yyyy-MM-ddTHH:mm:ss" displayFormat="long"/>-->
+									<DateRangeSelection id="idCreatedOn" dateValue="{path:'DateModel>/dateValueDRS2'}" secondDateValue="{path:'DateModel>/secondDateValueDRS2'}"
+										displayFormat="MMM d, y"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="B" label="Warehouse No.">
+								<fb:control>
+									<ComboBox id="idWhno" selectionChange="onSelectWarehouse"
+										items="{path:'/SH_WHNOSet', filters : [ { path : 'Lgnum', operator : 'NE', value1 : '1710'}], sorter: { path: 'Lgnum' }, length:300 }"
+										required="true">
+										<items>
+											<core:Item key="{Lgnum}" text="{Lgnum}"/>
+										</items>
+									</ComboBox>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="C" label="ASN">
+								<fb:control>
+									<ComboBox id="idDocno" value="" items="{/ZC_ASN}">
+										<items>
+											<core:Item key="{Asn}" text="{Asn}"/>
+										</items>
+									</ComboBox>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="D" label="Actual Completion Time" partOfCurrentVariant="false" visibleInFilterBar="false">
+								<fb:control>
+									<DatePicker id="idCompletionTime" dateValue="{path:'DateModel01>/prCoplitionDate'}"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="F" label="Delivery Date">
+								<fb:control>
+									<DateRangeSelection id="idDlvDate" dateValue="{path:'DateModel01>/prDlvDate'}" secondDateValue="{path:'DateModel01>/prDlvDate01'}"
+										displayFormat="MMM d, y"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="E" label="Hide Completed ASNs">
+								<fb:control>
+									<CheckBox id="idCheckBoxMarked" name="ss" selected="true"/>
+								</fb:control>
+							</fb:FilterItem>
+						</fb:filterItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<!-- DynamicPage Content -->
+		<f:content>
+			<VBox busy="{LocalDataModel>/busyIndicate}">
+				<table:Table id="idRCPTable" class="classRCPTable" selectionMode="Single"
+					rows="{path:'LocalDataModel>/tHdrSet', sorter: [{ path: 'UnloadingStart', descending: false }]}" rowSelectionChange="onNavigate"
+					selectionBehavior="Row" showNoData="true">
+					<table:toolbar>
+						<Toolbar>
+							<Title id="idTableTitle" text="Total Rows" level="H2"/>
+							<ToolbarSpacer/>
+							<HBox direction="RowReverse" alignItems="Start">
+								<Button icon="sap-icon://open-command-field" press="onNextRecords" id="idNextRecordsBtn" enabled="false"/>
+								<Button icon="sap-icon://close-command-field" press="onPreviousRecords" id="idPrevRecordsBtn" enabled="false"/>
+							</HBox>
+							<Button type="Default" press="onDataExport" icon="sap-icon://excel-attachment"/>
+							<!--<Button tooltip="View Settings" icon="sap-icon://drop-down-list" press="handleViewSettingsDialogButtonPressed"/>-->
+						</Toolbar>
+					</table:toolbar>
+					<table:columns>
+						<table:Column width="8rem">
+							<Label wrapping="true" text="Warehouse Number " textAlign="Center" width="100%"/>
+							<table:template>
+								<Text text="{LocalDataModel>Whno}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="11rem" sortProperty="Asn">
+							<Label text="ASN #" textAlign="Center" width="100%"/>
+							<table:template>
+								<Text text="{LocalDataModel>Asn}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="12rem">
+							<Label text="Unloading Start Time" textAlign="Center" width="100%"/>
+							<table:template>
+								<Text
+									text="{path:'LocalDataModel>UnloadingStart', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'yyyy-MM-dd HH:mm:ss', UTC: true }}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="11rem">
+							<Label text="Target Duration (HR)" textAlign="Center" width="100%"/>
+							<table:template>
+								<Text text="{LocalDataModel>PutawayTarget}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="12rem">
+							<Label text="Target Completion Time" textAlign="Center" width="100%"/>
+							<table:template>
+								<Text
+									text="{path:'LocalDataModel>TargetComTime', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'yyyy-MM-dd HH:mm:ss', UTC: true }}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="12rem">
+							<Label text="Actual Completion Time" textAlign="Center" width="100%"/>
+							<table:template>
+								<Text
+									text="{path:'LocalDataModel>ActualComletionTime', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'yyyy-MM-dd HH:mm:ss', UTC: true }} "/>
+							</table:template>
+						</table:Column>
+						<table:Column width="8rem">
+							<table:multiLabels>
+								<Label wrapping="true" text="Total Lines" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/totalLinSum})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{LocalDataModel>TotalLines}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="8rem">
+							<table:multiLabels>
+								<Label text="Left Lines" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/leftLineArr})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{LocalDataModel>LiftLines}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="8rem">
+							<Label text="Mark as Completed" textAlign="Center" width="100%"/>
+							<table:template>
+								<CheckBox wrapping="true" name="a" select="onSelectTableCheckBox" selected="{LocalDataModel>DlvComplete}"/>
+								<!--<Text text="{LiftLines}"/>-->
+							</table:template>
+						</table:Column>
+						<table:Column width="8rem">
+							<Label text="% Completion in 24H" textAlign="Center" width="100%"/>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Completion24', formatter:'formatNumber'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="8rem">
+							<Label text="% Left" textAlign="Center" width="100%"/>
+							<table:template>
+								<Text text="{path:'LocalDataModel>LiftPercent', formatter:'formatNumber'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="8rem" headerSpan="{multiHeaderConfig>/multiheader1}">
+							<table:multiLabels>
+								<Label text="CB10-Cageable Parts" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Cb10Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Cb10Total' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="8rem">
+							<table:multiLabels>
+								<Label text="CB10-Cageable Parts"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Cb10Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Cb10Lift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="8rem">
+							<table:multiLabels>
+								<Label text="CB10-Cageable Parts"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Cb10Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Cb10Min' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="DG10-DG-HV PARTS" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Dg10Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Dg10Total' }" wrapping="true"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="DG10-DG-HV PARTS"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Dg10Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Dg10Lift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="DG10-DG-HV PARTS"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Dg10Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Dg10Min' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Dangerous Goods DGHI" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/DghiTotal})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>DghiTotal' }" wrapping="true"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="11rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Dangerous Goods DGHI"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/DghiLift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>DghiLift' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="11rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Dangerous Goods DGHI"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/DghiMin})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>DghiMin' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" headerSpan="{multiHeaderConfig>/multiheader1}">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }"-->
+							<table:multiLabels>
+								<Label text="LB10-Loose Bulk" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Lb10Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Lb10Total' }" wrapping="true"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem">
+							<table:multiLabels>
+								<Label text="LB10-Loose Bulk"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Lb10Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Lb10Lift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem">
+							<table:multiLabels>
+								<Label text="LB10-Loose Bulk"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Lb10Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Lb10Min' }"/>
+							</table:template>
+						</table:Column>
+						<!--BC10-Bumper Cover-->
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="BC10 –Bumper Cover" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Bc10Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Bc10Total'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="BC10 –Bumper Cover"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Bc10Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Bc10Lift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="BC10 –Bumper Cover"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Bc10Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Bc10Min'}"/>
+							</table:template>
+						</table:Column>
+						<!--BC10-Bumper Cover-->
+						<!--Merging columns for 7110 and 7310 -LMHI (LM10 + RELM)-->
+						<!--<table:Column width="9rem" headerSpan="{multiHeaderConfig>/multiheader1}"-->
+						<!--  visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="Lower Mezzanine LM10" textAlign="Center" width="100%"/>-->
+						<!--    <Label text="Total" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/Lm10Total})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>Lm10Total' }" wrapping="true"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--<table:Column width="11rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="Lower Mezzanine LM10"/>-->
+						<!--    <Label text="Left" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/Lm10Lift})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>Lm10Lift'}"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--<table:Column width="11rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="Lower Mezzanine LM10"/>-->
+						<!--    <Label text="Min" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/Lm10Min})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>Lm10Min' }"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<table:Column width="9rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Lower Mezzanine LMHI" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/LmhiTotal})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>LmhiTotal' }" wrapping="true"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="11rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Lower Mezzanine LMHI"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/LmhiLift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>LmhiLift' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="11rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Lower Mezzanine LMHI"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/LmhiMin})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>LmhiMin' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Reserve Storage RE10" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Re10Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Re10Total' }" wrapping="true"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Reserve Storage RE10"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Re10Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Re10Lift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Reserve Storage RE10"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Re10Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Re10Min' }"/>
+							</table:template>
+						</table:Column>
+						<!--Merging columns for 7110 and 7310 -LMHI (LM10 + RELM)-->
+						<!--<table:Column width="9rem" headerSpan="{multiHeaderConfig>/multiheader1}"-->
+						<!--  visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="LM Reserve RELM" textAlign="Center" width="100%"/>-->
+						<!--    <Label text="Total" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/RelmTotal})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>RelmTotal' }" wrapping="true"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="LM Reserve RELM"/>-->
+						<!--    <Label text="Left" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/RelmLift})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>RelmLift'}"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="LM Reserve RELM"/>-->
+						<!--    <Label text="Min" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/RelmMin})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>RelmMin' }"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--Merging columns for 7110 and 7310 -LMHI (LM10 + RELM)-->
+						<!--Merging columns for 7110 and 7310 -UMHI (REUM + UM10)-->
+						<!--REUM-->
+						<!--<table:Column width="9rem" headerSpan="{multiHeaderConfig>/multiheader1}"-->
+						<!--  visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="UM Reserve REUM" textAlign="Center" width="100%"/>-->
+						<!--    <Label text="Total" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/ReumTotal})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>ReumTotal' }" wrapping="true"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="UM Reserve REUM"/>-->
+						<!--    <Label text="Left" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/ReumLift})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>ReumLift'}"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="UM Reserve REUM"/>-->
+						<!--    <Label text="Min" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/ReumMin})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>ReumMin' }"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--REUM-->
+						<!--UM10-->
+						<!--<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"-->
+						<!--  visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="Upper Mezzanine UM10" textAlign="Center" width="100%"/>-->
+						<!--    <Label text="Total" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/Um10Total})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>Um10Total' }" wrapping="true"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="Upper Mezzanine UM10"/>-->
+						<!--    <Label text="Left" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/Um10Lift})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>Um10Lift'}"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="Upper Mezzanine UM10"/>-->
+						<!--    <Label text="Min" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/Um10Min})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>Um10Min' }"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--UM10-->
+						<table:Column width="9rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Upper Mezzanine UMHI" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/UmhiTotal})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>UmhiTotal' }" wrapping="true"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="11rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Upper Mezzanine UMHI"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/UmhiLift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>UmhiLift' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="11rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Upper Mezzanine UMHI"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/UmhiMin})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>UmhiMin' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Fast Rack PDC1 FR10" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Rf10Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Rf10Total'}" wrapping="true"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Fast Rack PDC1 FR10"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Rf10Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Rf10Lift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Fast Rack PDC1 FR10"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Fr10Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Fr10Min' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true}">
+							<table:multiLabels>
+								<Label text="Loose Bulk PDC2 LB20" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Lb20Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Lb20Total' }" wrapping="true"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Loose Bulk PDC2 LB20"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Lb20Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Lb20Lift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }">
+							<table:multiLabels>
+								<Label text="Loose Bulk PDC2 LB20"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Lb20Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Lb20Min' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }"-->
+							<table:multiLabels>
+								<Label text="NOLO-No Location" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/NoloTotal})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>NoloTotal' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }"-->
+							<table:multiLabels>
+								<Label text="NOLO-No Location"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/NoloLift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>NoloLift' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? false : true }"-->
+							<table:multiLabels>
+								<Label text="NOLO-No Location"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/NoloMin})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>NoloMin' }"/>
+							</table:template>
+						</table:Column>
+						<!--WP10 - Walkable Bulk Parts-->
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="WP10 - Walkable Bulk Parts" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Wp10Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Wp10Total' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="WP10 - Walkable Bulk Parts"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Wp10Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Wp10Lift' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="WP10 - Walkable Bulk Parts"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Wp10Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Wp10Min' }"/>
+							</table:template>
+						</table:Column>
+						<!--- WP10 - Walkable Bulk Parts-->
+						<!--FP10 - Floor Pick Parts -->
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="FP10 - Floor Pick Parts" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Fp10Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Fp10Total' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="FP10 - Floor Pick Parts"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Fp10Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Fp10Lift' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="FP10 - Floor Pick Parts"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Fp10Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Fp10Min'}"/>
+							</table:template>
+						</table:Column>
+						<!--- FP10 - Floor Pick Parts-->
+						<!--MP10 - Medium Parts -->
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="MP10-Medium Parts" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Mp10Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Mp10Total'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="MP10-Medium Parts"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Mp10Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Mp10Lift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="MP10-Medium Parts"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Mp10Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Mp10Min'}"/>
+							</table:template>
+						</table:Column>
+						<!--- MP10 - Medium Parts-->
+						<!--RS10 - Rack Storage Area -->
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="RS10 - Rack Storage Area" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Rs10Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Rs10Total'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="RS10 - Rack Storage Area"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Rs10Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Rs10Lift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="RS10 - Rack Storage Area"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Rs10Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Rs10Min'}"/>
+							</table:template>
+						</table:Column>
+						<!--SB10 - Slow Bulk -->
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="SB10 - Slow Bulk" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Sb10Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Sb10Total'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="SB10 - Slow Bulk"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Sb10Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Sb10Lift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="SB10 - Slow Bulk"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Sb10Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Sb10Min'}"/>
+							</table:template>
+						</table:Column>
+						<!--- SB10 - Slow Bulk-->
+						<!--SPHI -Service Parts SPHI -->
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="SPHI -Service Parts SPHI" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/SphiTotal})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>SphiTotal'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="SPHI -Service Parts SPHI"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/SphiLift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>SphiLift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="SPHI -Service Parts SPHI"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/SphiMin})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>SphiMin'}"/>
+							</table:template>
+						</table:Column>
+						<!--- SPHI -Service Parts SPHI-->
+						<!--SVHI –Small and Very Small Parts SVHI -->
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="SVHI –Small and Very Small Parts SVHI" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/SvhiTotal})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>SvhiTotal'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="SVHI –Small and Very Small Parts SVHI"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/SvhiLift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>SvhiLift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="SVHI –Small and Very Small Parts SVHI"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/SvhiMin})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>SvhiMin'}"/>
+							</table:template>
+						</table:Column>
+						<!---SVHI –Small and Very Small Parts SVHI-->
+						<!--LBHI –Bumper Cover & Loose Bulk -->
+						<!--<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"-->
+						<!--  visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="LBHI –Bumper Cover and Loose Bulk" textAlign="Center" width="100%"/>-->
+						<!--    <Label text="Total" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/LbhiTotal})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>LbhiTotal'}"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="LBHI –Bumper Cover and Loose Bulk"/>-->
+						<!--    <Label text="Left" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/LbhiLift})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>LbhiLift'}"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!--<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">-->
+						<!--  <table:multiLabels>-->
+						<!--    <Label text="LBHI –Bumper Cover and Loose Bulk"/>-->
+						<!--    <Label text="Min" textAlign="Center" width="100%"/>-->
+						<!--    <Label wrapping="true" text="({multiHeaderConfig>/LbhiMin})" textAlign="Center" width="100%"/>-->
+						<!--  </table:multiLabels>-->
+						<!--  <table:template>-->
+						<!--    <Text text="{path:'LocalDataModel>LbhiMin'}"/>-->
+						<!--  </table:template>-->
+						<!--</table:Column>-->
+						<!---LBHI –Bumper Cover & Loose Bulk-->
+						<table:Column width="7rem">
+							<Label text="Doc Num" textAlign="Center" width="100%"/>
+							<table:template>
+								<Text text="{LocalDataModel>Docno}"/>
+							</table:template>
+						</table:Column>
+					</table:columns>
+				</table:Table>
+			</VBox>
+		</f:content>
+		<!-- DynamicPage Footer -->
+		<f:footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button type="Accept" text="Accept"/>
+				<Button type="Reject" text="Reject"/>
+			</OverflowToolbar>
+		</f:footer>
+	</f:DynamicPage>
+</mvc:View>
