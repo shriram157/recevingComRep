@@ -161,6 +161,24 @@
 							<Text text="{LocalDataModel>Bc10Lift}"/>
 						</table:template>
 					</table:Column>
+					<table:Column width="11rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+						<table:multiLabels>
+							<Label text="Y810-Deconsolidation"/>
+							<Label text="Left" textAlign="Center" width="100%"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{LocalDataModel>Y810Lift}"/>
+						</table:template>
+					</table:Column>
+					<table:Column width="11rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+						<table:multiLabels>
+							<Label text="Y860 – Relabeling"/>
+							<Label text="Left" textAlign="Center" width="100%"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{LocalDataModel>Y860Lift}"/>
+						</table:template>
+					</table:Column>
 					<table:Column width="11rem">
 						<table:multiLabels>
 							<Label text="LB10 - Loose BuLK"/>

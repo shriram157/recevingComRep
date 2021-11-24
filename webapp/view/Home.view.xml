@@ -325,6 +325,72 @@
 								<Text text="{path:'LocalDataModel>Bc10Min'}"/>
 							</table:template>
 						</table:Column>
+						<!----------------Start----------------------Demand DMND0003251-------------------------------->
+						<!--Y810-Consolidation -->
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="Y810-Deconsolidation" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Y810Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Y810Total'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="Y810-Deconsolidation"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Y810Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Y810Lift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="Y810-Deconsolidation"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Y810Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Y810Min'}"/>
+							</table:template>
+						</table:Column>
+						<!--Y860 – Relabeling  -->
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="Y860 – Relabeling " textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Y860Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Y860Total'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="Y860 – Relabeling "/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Y860Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Y860Lift'}"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="Y860 – Relabeling "/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Y860Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Y860Min'}"/>
+							</table:template>
+						</table:Column>
+						<!----------------End----------------------Demand DMND0003251-------------------------------->
 						<!--BC10-Bumper Cover-->
 						<!--Merging columns for 7110 and 7310 -LMHI (LM10 + RELM)-->
 						<!--<table:Column width="9rem" headerSpan="{multiHeaderConfig>/multiheader1}"-->

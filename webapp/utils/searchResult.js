@@ -300,6 +300,12 @@ sap.ui.define([
 							Bc10Min: [],
 							Bc10Lift: [],
 							Bc10Total: [],
+							Y810Min: [],
+							Y810Lift: [],
+							Y810Total: [],
+							Y860Min: [],
+							Y860Lift: [],
+							Y860Total: [],
 							Sb10Min: [],
 							Sb10Lift: [],
 							Sb10Total: [],
@@ -523,6 +529,24 @@ sap.ui.define([
 							if (dataResult[i].Bc10Total != "") {
 								oArr.Bc10Total.push(parseInt(dataResult[i].Bc10Total));
 							}
+							if (dataResult[i].Y810Min != "") {
+								oArr.Y810Min.push(Math.round(dataResult[i].Y810Min));
+							}
+							if (dataResult[i].Y810Lift != "") {
+								oArr.Y810Lift.push(parseInt(dataResult[i].Y810Lift));
+							}
+							if (dataResult[i].Y810Total != "") {
+								oArr.Y810Total.push(parseInt(dataResult[i].Y810Total));
+							}
+							if (dataResult[i].Y860Min != "") {
+								oArr.Y860Min.push(Math.round(dataResult[i].Y860Min));
+							}
+							if (dataResult[i].Y860Lift != "") {
+								oArr.Y860Lift.push(parseInt(dataResult[i].Y860Lift));
+							}
+							if (dataResult[i].Y860Total != "") {
+								oArr.Y860Total.push(parseInt(dataResult[i].Y860Total));
+							}
 							if (dataResult[i].Sb10Min != "") {
 								oArr.Sb10Min.push(Math.round(dataResult[i].Sb10Min));
 							}
@@ -658,7 +682,15 @@ sap.ui.define([
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Bc10Min", elm._fnTotalCount(oArr.Bc10Min));
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Bc10Lift", elm._fnTotalCount(oArr.Bc10Lift));
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Bc10Total", elm._fnTotalCount(oArr.Bc10Total));
+						
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y810Min", elm._fnTotalCount(oArr.Y810Min));
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y810Lift", elm._fnTotalCount(oArr.Y810Lift));
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y810Total", elm._fnTotalCount(oArr.Y810Total));
 
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y860Min", elm._fnTotalCount(oArr.Y860Min));
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y860Lift", elm._fnTotalCount(oArr.Y860Lift));
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y860Total", elm._fnTotalCount(oArr.Y860Total));
+						
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Sf10Min", elm._fnTotalCount(oArr.Sf10Min));
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Sf10Lift", elm._fnTotalCount(oArr.Sf10Lift));
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Sf10Total", elm._fnTotalCount(oArr.Sf10Total));
@@ -745,6 +777,14 @@ sap.ui.define([
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Bc10Min", "");
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Bc10Lift", "");
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Bc10Total", "");
+						
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y810Min", "");
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y810Lift", "");
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y810Total", "");
+						
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y860Min", "");
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y860Lift", "");
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y860Total", "");
 
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Sf10Min", "");
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Sf10Lift", "");
@@ -840,6 +880,14 @@ sap.ui.define([
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Bc10Min", "");
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Bc10Lift", "");
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Bc10Total", "");
+
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y810Min", "");
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y810Lift", "");
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y810Total", "");
+						
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y860Min", "");
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y860Lift", "");
+						elm.getView().getModel("multiHeaderConfig").setProperty("/Y860Total", "");
 
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Sf10Min", "");
 						elm.getView().getModel("multiHeaderConfig").setProperty("/Sf10Lift", "");
