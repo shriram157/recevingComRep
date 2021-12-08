@@ -327,7 +327,7 @@
 						</table:Column>
 						<!--Start Demand DMND0003251 -->
 						<!--Y810-Consolidation -->
-						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}" visible="true">
 							<table:multiLabels>
 								<Label text="Y810-Deconsolidation" textAlign="Center" width="100%"/>
 								<Label text="Total" textAlign="Center" width="100%"/>
@@ -337,7 +337,7 @@
 								<Text text="{path:'LocalDataModel>Y810Total'}"/>
 							</table:template>
 						</table:Column>
-						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+						<table:Column width="9rem" visible="true">
 							<table:multiLabels>
 								<Label text="Y810-Deconsolidation"/>
 								<Label text="Left" textAlign="Center" width="100%"/>
@@ -347,7 +347,7 @@
 								<Text text="{path:'LocalDataModel>Y810Lift'}"/>
 							</table:template>
 						</table:Column>
-						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+						<table:Column width="9rem" visible="true">
 							<table:multiLabels>
 								<Label text="Y810-Deconsolidation"/>
 								<Label text="Min" textAlign="Center" width="100%"/>
@@ -358,7 +358,7 @@
 							</table:template>
 						</table:Column>
 						<!--Y860 – Relabeling  -->
-						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}" visible="true">
 							<table:multiLabels>
 								<Label text="Y860 – Relabeling " textAlign="Center" width="100%"/>
 								<Label text="Total" textAlign="Center" width="100%"/>
@@ -368,7 +368,7 @@
 								<Text text="{path:'LocalDataModel>Y860Total'}"/>
 							</table:template>
 						</table:Column>
-						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+						<table:Column width="9rem" visible="true">
 							<table:multiLabels>
 								<Label text="Y860 – Relabeling "/>
 								<Label text="Left" textAlign="Center" width="100%"/>
@@ -378,7 +378,7 @@
 								<Text text="{path:'LocalDataModel>Y860Lift'}"/>
 							</table:template>
 						</table:Column>
-						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+						<table:Column width="9rem" visible="true">
 							<table:multiLabels>
 								<Label text="Y860 – Relabeling "/>
 								<Label text="Min" textAlign="Center" width="100%"/>

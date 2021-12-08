@@ -161,7 +161,7 @@
 							<Text text="{LocalDataModel>Bc10Lift}"/>
 						</table:template>
 					</table:Column>
-					<table:Column width="11rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+					<table:Column width="11rem" visible="true">
 						<table:multiLabels>
 							<Label text="Y810-Deconsolidation"/>
 							<Label text="Left" textAlign="Center" width="100%"/>
@@ -170,7 +170,7 @@
 							<Text text="{LocalDataModel>Y810Lift}"/>
 						</table:template>
 					</table:Column>
-					<table:Column width="11rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+					<table:Column width="11rem" visible="true">
 						<table:multiLabels>
 							<Label text="Y860 – Relabeling"/>
 							<Label text="Left" textAlign="Center" width="100%"/>
