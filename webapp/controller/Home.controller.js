@@ -4,8 +4,9 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/core/util/Export",
 	"sap/ui/core/util/ExportTypeCSV",
-	"zRecCompReport/utils/searchResult"
-], function (Controller, Sorter, Filter, Export, ExportTypeCSV, searchResult) {
+	"zRecCompReport/utils/searchResult",
+	"sap/m/MessageBox"
+], function (Controller, Sorter, Filter, Export, ExportTypeCSV, searchResult, MessageBox) {
 	"use strict";
 	var cUser;
 
@@ -398,6 +399,21 @@ sap.ui.define([
 
 		},
 
+		validateDeliveryDate: function (oEvt) {
+			var dateRangePicker = oEvt.getSource();
+			var fromDate = dateRangePicker.getDateValue();
+			var toDate = dateRangePicker.getSecondDateValue();
+			var oneDay = 24*60*60*1000;
+			var diffInDays = Math.abs((toDate.getTime() - fromDate.getTime())/oneDay);
+			if(diffInDays > 180 || diffInDays === 180 )
+			{
+				dateRangePicker.setValue(null);
+				MessageBox.alert("Please select date range within 6 months only");
+				
+			}
+			
+			
+		},
 		onSearch: function () {
 			var oKey = this.getView().byId("idWhno").getSelectedKey();
 			if (this.getOwnerComponent().getModel("LocalDataModel")) {

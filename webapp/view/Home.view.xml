@@ -62,7 +62,7 @@
 							<fb:FilterItem name="F" label="Delivery Date">
 								<fb:control>
 									<DateRangeSelection id="idDlvDate" dateValue="{path:'DateModel01>/prDlvDate'}" secondDateValue="{path:'DateModel01>/prDlvDate01'}"
-										displayFormat="MMM d, y"/>
+										displayFormat="MMM d, y" change="validateDeliveryDate" />
 								</fb:control>
 							</fb:FilterItem>
 							<fb:FilterItem name="E" label="Hide Completed ASNs">
