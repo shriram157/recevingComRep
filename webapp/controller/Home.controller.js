@@ -403,16 +403,14 @@ sap.ui.define([
 			var dateRangePicker = oEvt.getSource();
 			var fromDate = dateRangePicker.getDateValue();
 			var toDate = dateRangePicker.getSecondDateValue();
-			var oneDay = 24*60*60*1000;
-			var diffInDays = Math.abs((toDate.getTime() - fromDate.getTime())/oneDay);
-			if(diffInDays > 180 || diffInDays === 180 )
-			{
+			var oneDay = 24 * 60 * 60 * 1000;
+			var diffInDays = Math.abs((toDate.getTime() - fromDate.getTime()) / oneDay);
+			if (diffInDays > 180 || diffInDays === 180) {
 				dateRangePicker.setValue(null);
 				MessageBox.alert("Please select date range within 6 months only");
-				
+
 			}
-			
-			
+
 		},
 		onSearch: function () {
 			var oKey = this.getView().byId("idWhno").getSelectedKey();
@@ -718,7 +716,54 @@ sap.ui.define([
 
 						}
 
+					},
+
+					/////// added for incident start
+					{
+
+						name: "Dangerous Goods DGHI (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/DghiTotal") + ")",
+
+						template: {
+
+							content: "{DghiTotal}"
+
+						}
+
 					}, {
+
+						name: "Dangerous Goods DGHI (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/DghiLift") + ")",
+
+						template: {
+
+							//content: "{Dg10Lift}"
+							content: {
+								parts: ["DghiLift"],
+								formatter: function (value) {
+									if (value) {
+										var oval = parseFloat(value).toFixed(2);
+										return oval * 100;
+									} else {
+										return value;
+									}
+
+								}
+							}
+
+						}
+
+					}, {
+
+						name: "Dangerous Goods DGHI (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/DghiMin") + ")",
+
+						template: {
+							content: "{DghiMin}"
+
+						}
+
+					},
+					/////////// added for incident end
+
+					{
 
 						name: "Loose Bulk LB10 (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Lb10Total") + ")",
 
@@ -759,48 +804,52 @@ sap.ui.define([
 
 						}
 
-					}, {
+					},
 
-						name: "Lower Mezzanine LM10 (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Lm10Total") + ")",
+					// {
 
-						template: {
+					// 	name: "Lower Mezzanine LM10 (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Lm10Total") + ")",
 
-							content: "{Lm10Total}"
+					// 	template: {
 
-						}
+					// 		content: "{Lm10Total}"
 
-					}, {
+					// 	}
 
-						name: "Lower Mezzanine LM10 (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Lm10Lift") + ")",
+					// }, {
 
-						template: {
+					// 	name: "Lower Mezzanine LM10 (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Lm10Lift") + ")",
 
-							//content: "{Lm10Lift}"
-							content: {
-								parts: ["Lm10Lift"],
-								formatter: function (value) {
-									if (value) {
-										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
-									} else {
-										return value;
-									}
+					// 	template: {
 
-								}
-							}
+					// 		//content: "{Lm10Lift}"
+					// 		content: {
+					// 			parts: ["Lm10Lift"],
+					// 			formatter: function (value) {
+					// 				if (value) {
+					// 					var oval = parseFloat(value).toFixed(2);
+					// 					return oval * 100;
+					// 				} else {
+					// 					return value;
+					// 				}
 
-						}
+					// 			}
+					// 		}
 
-					}, {
+					// 	}
 
-						name: "Lower Mezzanine LM10 (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/LM10Min") + ")",
+					// }, {
 
-						template: {
-							content: "{LM10Min}"
+					// 	name: "Lower Mezzanine LM10 (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/LM10Min") + ")",
 
-						}
+					// 	template: {
+					// 		content: "{LM10Min}"
 
-					}, {
+					// 	}
+
+					// },
+
+					{
 
 						name: "Reserve Storage RE10 (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Re10Total") + ")",
 
@@ -841,107 +890,113 @@ sap.ui.define([
 
 						}
 
-					}, {
+					},
 
-						name: "LM Reserve RELM (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/RelmTotal") + ")",
+					// {
+
+					// 	name: "LM Reserve RELM (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/RelmTotal") + ")",
+
+					// 	template: {
+
+					// 		content: "{RelmTotal}"
+
+					// 	}
+
+					// }, {
+
+					// 	name: "LM Reserve RELM (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/RelmLift") + ")",
+
+					// 	template: {
+
+					// 		//content: "{RelmLift}"
+					// 		content: {
+					// 			parts: ["RelmLift"],
+					// 			formatter: function (value) {
+					// 				if (value) {
+					// 					var oval = parseFloat(value).toFixed(2);
+					// 					return oval * 100;
+					// 				} else {
+					// 					return value;
+					// 				}
+
+					// 			}
+					// 		}
+
+					// 	}
+
+					// }, {
+
+					// 	name: "LM Reserve RELM (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/RelmMin") + ")",
+
+					// 	template: {
+					// 		content: "{RelmMin}"
+
+					// 	}
+
+					// }, 
+
+					// {
+
+					// 	name: "UM Reserve REUM (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/ReumTotal") + ")",
+
+					// 	template: {
+
+					// 		content: "{ReumTotal}"
+
+					// 	}
+
+					// }, {
+
+					// 	name: "UM Reserve REUM (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/ReumLift") + ")",
+
+					// 	template: {
+
+					// 		//content: "{ReumLift}"
+					// 		content: {
+					// 			parts: ["ReumLift"],
+					// 			formatter: function (value) {
+					// 				if (value) {
+					// 					var oval = parseFloat(value).toFixed(2);
+					// 					return oval * 100;
+					// 				} else {
+					// 					return value;
+					// 				}
+
+					// 			}
+					// 		}
+
+					// 	}
+
+					// }, {
+
+					// 	name: "UM Reserve REUM (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/ReumMin") + ")",
+
+					// 	template: {
+					// 		content: "{ReumMin}"
+
+					// 	}
+
+					// }, 
+
+					{
+
+						name: "Upper Mezzanine Umhi (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/UmhiTotal") + ")",
 
 						template: {
 
-							content: "{RelmTotal}"
+							content: "{UmhiTotal}"
 
 						}
 
 					}, {
 
-						name: "LM Reserve RELM (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/RelmLift") + ")",
-
-						template: {
-
-							//content: "{RelmLift}"
-							content: {
-								parts: ["RelmLift"],
-								formatter: function (value) {
-									if (value) {
-										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
-									} else {
-										return value;
-									}
-
-								}
-							}
-
-						}
-
-					}, {
-
-						name: "LM Reserve RELM (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/RelmMin") + ")",
-
-						template: {
-							content: "{RelmMin}"
-
-						}
-
-					}, {
-
-						name: "UM Reserve REUM (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/ReumTotal") + ")",
-
-						template: {
-
-							content: "{ReumTotal}"
-
-						}
-
-					}, {
-
-						name: "UM Reserve REUM (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/ReumLift") + ")",
-
-						template: {
-
-							//content: "{ReumLift}"
-							content: {
-								parts: ["ReumLift"],
-								formatter: function (value) {
-									if (value) {
-										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
-									} else {
-										return value;
-									}
-
-								}
-							}
-
-						}
-
-					}, {
-
-						name: "UM Reserve REUM (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/ReumMin") + ")",
-
-						template: {
-							content: "{ReumMin}"
-
-						}
-
-					}, {
-
-						name: "Upper Mezzanine UM10 (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Um10Total") + ")",
-
-						template: {
-
-							content: "{Um10Total}"
-
-						}
-
-					}, {
-
-						name: "Upper Mezzanine UM10 (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Um10Lift") + ")",
+						name: "Upper Mezzanine Umhi (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/UmhiLift") + ")",
 
 						template: {
 
 							//content: "{Um10Lift}"
 							content: {
-								parts: ["Um10Lift"],
+								parts: ["UmhiLift"],
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
@@ -957,14 +1012,16 @@ sap.ui.define([
 
 					}, {
 
-						name: "Upper Mezzanine UM10 (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Um10Min") + ")",
+						name: "Upper Mezzanine Umhi (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/UmhiMin") + ")",
 
 						template: {
-							content: "{Um10Min}"
+							content: "{UmhiMin}"
 
 						}
 
-					}, {
+					},
+
+					{
 
 						name: "Fast Rack PDC1 FR10 (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Rf10Total") + ")",
 
@@ -1046,25 +1103,155 @@ sap.ui.define([
 
 						}
 
-					}, {
+					},
 
-						name: "Lower Mezzanine LMHI (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/LmhiTotal") + ")",
+					// {
+
+					// 	name: "Lower Mezzanine LMHI (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/LmhiTotal") + ")",
+
+					// 	template: {
+
+					// 		content: "{LmhiTotal}"
+
+					// 	}
+
+					// }, {
+
+					// 	name: "Lower Mezzanine LMHI (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/LmhiLift") + ")",
+
+					// 	template: {
+
+					// 		//content: "{Um10Lift}"
+					// 		content: {
+					// 			parts: ["LmhiLift"],
+					// 			formatter: function (value) {
+					// 				if (value) {
+					// 					var oval = parseFloat(value).toFixed(2);
+					// 					return oval * 100;
+					// 				} else {
+					// 					return value;
+					// 				}
+
+					// 			}
+					// 		}
+
+					// 	}
+
+					// }, {
+
+					// 	name: "Lower Mezzanine LMHI (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/LmhiMin") + ")",
+
+					// 	template: {
+					// 		content: "{LmhiMin}"
+
+					// 	}
+
+					// },
+
+					// {
+
+					// 	name: "Upper Mezzanine UMHI (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/UmhiTotal") + ")",
+
+					// 	template: {
+
+					// 		content: "{UmhiTotal}"
+
+					// 	}
+
+					// }, {
+
+					// 	name: "Upper Mezzanine UMHI (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/UmhiLift") + ")",
+
+					// 	template: {
+
+					// 		//content: "{Um10Lift}"
+					// 		content: {
+					// 			parts: ["UmhiLift"],
+					// 			formatter: function (value) {
+					// 				if (value) {
+					// 					var oval = parseFloat(value).toFixed(2);
+					// 					return oval * 100;
+					// 				} else {
+					// 					return value;
+					// 				}
+
+					// 			}
+					// 		}
+
+					// 	}
+
+					// }, {
+
+					// 	name: "Upper Mezzanine UMHI (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/UmhiMin") + ")",
+
+					// 	template: {
+					// 		content: "{UmhiMin}"
+
+					// 	}
+
+					// },
+
+					// {
+
+					// 	name: "Dangerous Goods DGHI (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/DghiTotal") + ")",
+
+					// 	template: {
+
+					// 		content: "{DghiTotal}"
+
+					// 	}
+
+					// }, {
+
+					// 	name: "Dangerous Goods DGHI (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/DghiLift") + ")",
+
+					// 	template: {
+
+					// 		//content: "{Um10Lift}"
+					// 		content: {
+					// 			parts: ["DghiLift"],
+					// 			formatter: function (value) {
+					// 				if (value) {
+					// 					var oval = parseFloat(value).toFixed(2);
+					// 					return oval * 100;
+					// 				} else {
+					// 					return value;
+					// 				}
+
+					// 			}
+					// 		}
+
+					// 	}
+
+					// }, {
+
+					// 	name: "Dangerous Goods DGHI (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/DghiMin") + ")",
+
+					// 	template: {
+					// 		content: "{DghiMin}"
+
+					// 	}
+
+					// },
+					{
+
+						name: "Y810-Deconsolidation (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y810Total") + ")",
 
 						template: {
 
-							content: "{LmhiTotal}"
+							content: "{Y810Total}"
 
 						}
 
 					}, {
 
-						name: "Lower Mezzanine LMHI (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/LmhiLift") + ")",
+						name: "Y810-Deconsolidation (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y810Lift") + ")",
 
 						template: {
 
 							//content: "{Um10Lift}"
 							content: {
-								parts: ["LmhiLift"],
+								parts: ["Y810Lift"],
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
@@ -1080,10 +1267,10 @@ sap.ui.define([
 
 					}, {
 
-						name: "Lower Mezzanine LMHI (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/LmhiMin") + ")",
+						name: "Y810-Deconsolidation (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y810Min") + ")",
 
 						template: {
-							content: "{LmhiMin}"
+							content: "{Y810Min}"
 
 						}
 
@@ -1091,23 +1278,23 @@ sap.ui.define([
 
 					{
 
-						name: "Upper Mezzanine UMHI (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/UmhiTotal") + ")",
+						name: "Y860 – Relabeling (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y860Total") + ")",
 
 						template: {
 
-							content: "{UmhiTotal}"
+							content: "{Y860Total}"
 
 						}
 
 					}, {
 
-						name: "Upper Mezzanine UMHI (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/UmhiLift") + ")",
+						name: "Y860 – Relabeling (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y860Lift") + ")",
 
 						template: {
 
 							//content: "{Um10Lift}"
 							content: {
-								parts: ["UmhiLift"],
+								parts: ["Y860Lift"],
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
@@ -1123,53 +1310,10 @@ sap.ui.define([
 
 					}, {
 
-						name: "Upper Mezzanine UMHI (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/UmhiMin") + ")",
+						name: "Y860 – Relabeling (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y860Min") + ")",
 
 						template: {
-							content: "{UmhiMin}"
-
-						}
-
-					},
-
-					{
-
-						name: "Dangerous Goods DGHI (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/DghiTotal") + ")",
-
-						template: {
-
-							content: "{DghiTotal}"
-
-						}
-
-					}, {
-
-						name: "Dangerous Goods DGHI (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/DghiLift") + ")",
-
-						template: {
-
-							//content: "{Um10Lift}"
-							content: {
-								parts: ["DghiLift"],
-								formatter: function (value) {
-									if (value) {
-										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
-									} else {
-										return value;
-									}
-
-								}
-							}
-
-						}
-
-					}, {
-
-						name: "Dangerous Goods DGHI (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/DghiMin") + ")",
-
-						template: {
-							content: "{DghiMin}"
+							content: "{Y860Min}"
 
 						}
 
@@ -1213,6 +1357,364 @@ sap.ui.define([
 
 						template: {
 							content: "{NoloMin}"
+
+						}
+
+					},
+
+					{
+
+						name: "WP10 - Walkable Bulk Parts (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Wp10Total") + ")",
+
+						template: {
+
+							content: "{Wp10Total}"
+
+						}
+
+					}, {
+
+						name: "WP10 - Walkable Bulk Parts (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Wp10Lift") + ")",
+
+						template: {
+
+							//content: "{Um10Lift}"
+							content: {
+								parts: ["Wp10Lift"],
+								formatter: function (value) {
+									if (value) {
+										var oval = parseFloat(value).toFixed(2);
+										return oval * 100;
+									} else {
+										return value;
+									}
+
+								}
+							}
+
+						}
+
+					}, {
+
+						name: "WP10 - Walkable Bulk Parts (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Wp10Min") + ")",
+
+						template: {
+							content: "{Wp10Min}"
+
+						}
+
+					},
+
+					{
+
+						name: "TP10 - Two Persons Pick (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Tp10Total") + ")",
+
+						template: {
+
+							content: "{Tp10Total}"
+
+						}
+
+					}, {
+
+						name: "TP10 - Two Persons Pick (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Tp10Lift") + ")",
+
+						template: {
+
+							//content: "{Um10Lift}"
+							content: {
+								parts: ["Tp10Lift"],
+								formatter: function (value) {
+									if (value) {
+										var oval = parseFloat(value).toFixed(2);
+										return oval * 100;
+									} else {
+										return value;
+									}
+
+								}
+							}
+
+						}
+
+					}, {
+
+						name: "TP10 - Two Persons Pick (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Tp10Min") + ")",
+
+						template: {
+							content: "{Tp10Min}"
+
+						}
+
+					},
+
+					{
+
+						name: "FP10 - Floor Pick Parts (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Fp10Total") + ")",
+
+						template: {
+
+							content: "{Fp10Total}"
+
+						}
+
+					}, {
+
+						name: "FP10 - Floor Pick Parts (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Fp10Lift") + ")",
+
+						template: {
+
+							//content: "{Um10Lift}"
+							content: {
+								parts: ["Fp10Lift"],
+								formatter: function (value) {
+									if (value) {
+										var oval = parseFloat(value).toFixed(2);
+										return oval * 100;
+									} else {
+										return value;
+									}
+
+								}
+							}
+
+						}
+
+					}, {
+
+						name: "FP10 - Floor Pick Parts (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Fp10Min") + ")",
+
+						template: {
+							content: "{Fp10Min}"
+
+						}
+
+					},
+
+					{
+
+						name: "MP10-Medium Parts (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Mp10Total") + ")",
+
+						template: {
+
+							content: "{Mp10Total}"
+
+						}
+
+					}, {
+
+						name: "MP10-Medium Parts (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Mp10Lift") + ")",
+
+						template: {
+
+							//content: "{Um10Lift}"
+							content: {
+								parts: ["Mp10Lift"],
+								formatter: function (value) {
+									if (value) {
+										var oval = parseFloat(value).toFixed(2);
+										return oval * 100;
+									} else {
+										return value;
+									}
+
+								}
+							}
+
+						}
+
+					}, {
+
+						name: "MP10-Medium Parts (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Mp10Min") + ")",
+
+						template: {
+							content: "{Mp10Min}"
+
+						}
+
+					},
+
+					{
+
+						name: "RS10 - Rack Storage Area (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Rs10Total") + ")",
+
+						template: {
+
+							content: "{Rs10Total}"
+
+						}
+
+					}, {
+
+						name: "RS10 - Rack Storage Area (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Rs10Lift") + ")",
+
+						template: {
+
+							//content: "{Um10Lift}"
+							content: {
+								parts: ["Rs10Lift"],
+								formatter: function (value) {
+									if (value) {
+										var oval = parseFloat(value).toFixed(2);
+										return oval * 100;
+									} else {
+										return value;
+									}
+
+								}
+							}
+
+						}
+
+					}, {
+
+						name: "RS10 - Rack Storage Area (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Rs10Min") + ")",
+
+						template: {
+							content: "{Rs10Min}"
+
+						}
+
+					},
+
+					{
+
+						name: "SB10 - Slow Bulk (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Sb10Total") + ")",
+
+						template: {
+
+							content: "{Sb10Total}"
+
+						}
+
+					}, {
+
+						name: "SB10 - Slow Bulk (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Sb10Lift") + ")",
+
+						template: {
+
+							//content: "{Um10Lift}"
+							content: {
+								parts: ["Sb10Lift"],
+								formatter: function (value) {
+									if (value) {
+										var oval = parseFloat(value).toFixed(2);
+										return oval * 100;
+									} else {
+										return value;
+									}
+
+								}
+							}
+
+						}
+
+					}, {
+
+						name: "SB10 - Slow Bulk (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Sb10Min") + ")",
+
+						template: {
+							content: "{Sb10Min}"
+
+						}
+
+					},
+
+					{
+
+						name: "SPHI - Service Parts SPHI (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/SphiTotal") + ")",
+
+						template: {
+
+							content: "{SphiTotal}"
+
+						}
+
+					}, {
+
+						name: "SPHI - Service Parts SPHI (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/SphiLift") + ")",
+
+						template: {
+
+							//content: "{Um10Lift}"
+							content: {
+								parts: ["SphiLift"],
+								formatter: function (value) {
+									if (value) {
+										var oval = parseFloat(value).toFixed(2);
+										return oval * 100;
+									} else {
+										return value;
+									}
+
+								}
+							}
+
+						}
+
+					}, {
+
+						name: "SPHI - Service Parts SPHI (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/SphiMin") + ")",
+
+						template: {
+							content: "{SphiMin}"
+
+						}
+
+					},
+
+					{
+
+						name: "SVHI - Small and Very Small Parts SVHI (Total - " + that.getView().getModel("multiHeaderConfig").getProperty(
+							"/SvhiTotal") + ")",
+
+						template: {
+
+							content: "{SvhiTotal}"
+
+						}
+
+					}, {
+
+						name: "SVHI - Small and Very Small Parts SVHI (Left - " + that.getView().getModel("multiHeaderConfig").getProperty(
+								"/SvhiLift") +
+							")",
+
+						template: {
+
+							//content: "{Um10Lift}"
+							content: {
+								parts: ["SvhiLift"],
+								formatter: function (value) {
+									if (value) {
+										var oval = parseFloat(value).toFixed(2);
+										return oval * 100;
+									} else {
+										return value;
+									}
+
+								}
+							}
+
+						}
+
+					}, {
+
+						name: "SVHI - Small and Very Small Parts SVHI (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/SvhiMin") +
+							")",
+
+						template: {
+							content: "{SvhiMin}"
+
+						}
+
+					}, {
+
+						name: "Doc Num",
+
+						template: {
+
+							content: "{Docno}"
 
 						}
 

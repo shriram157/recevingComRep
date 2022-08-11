@@ -13,7 +13,6 @@
 				</f:actions>
 			</f:DynamicPageTitle>
 		</f:title>
-		<!--<f:subheading text="{path:'DateModel>/secondDateValueDRS2'}"/>-->
 		<!-- DynamicPage Header -->
 		<f:header>
 			<f:DynamicPageHeader pinnable="true">
@@ -62,7 +61,7 @@
 							<fb:FilterItem name="F" label="Delivery Date">
 								<fb:control>
 									<DateRangeSelection id="idDlvDate" dateValue="{path:'DateModel01>/prDlvDate'}" secondDateValue="{path:'DateModel01>/prDlvDate01'}"
-										displayFormat="MMM d, y" change="validateDeliveryDate" />
+										displayFormat="MMM d, y" change="validateDeliveryDate"/>
 								</fb:control>
 							</fb:FilterItem>
 							<fb:FilterItem name="E" label="Hide Completed ASNs">
@@ -745,6 +744,46 @@
 							</table:template>
 						</table:Column>
 						<!--- WP10 - Walkable Bulk Parts-->
+						
+						<!--- TP10 - Walkable Bulk Parts start-->
+							<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
+							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="TP10 - Two Persons Pick" textAlign="Center" width="100%"/>
+								<Label text="Total" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Tp10Total})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Tp10Total' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<!--visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }"-->
+							<table:multiLabels>
+								<Label text="TP10 - Two Persons Pick"/>
+								<Label text="Left" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Tp10Lift})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Tp10Lift' }"/>
+							</table:template>
+						</table:Column>
+						<table:Column width="9rem" visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
+							<table:multiLabels>
+								<Label text="TP10 - Two Persons Pick"/>
+								<Label text="Min" textAlign="Center" width="100%"/>
+								<Label wrapping="true" text="({multiHeaderConfig>/Tp10Min})" textAlign="Center" width="100%"/>
+							</table:multiLabels>
+							<table:template>
+								<Text text="{path:'LocalDataModel>Tp10Min' }"/>
+							</table:template>
+						</table:Column>
+						
+						<!--- TP10 - Walkable Bulk Parts end-->
+						
+						
+						
 						<!--FP10 - Floor Pick Parts -->
 						<table:Column width="11rem" headerSpan="{multiHeaderConfig>/multiheader1}"
 							visible="{=${LocalDataModel>/oWarehouseNum} ==='7330' ? true : false }">
