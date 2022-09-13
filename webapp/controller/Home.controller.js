@@ -625,7 +625,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -656,7 +656,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -697,7 +697,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -741,7 +741,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -785,7 +785,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -828,7 +828,7 @@ sap.ui.define([
 					// 			formatter: function (value) {
 					// 				if (value) {
 					// 					var oval = parseFloat(value).toFixed(2);
-					// 					return oval * 100;
+					// 					return oval ;
 					// 				} else {
 					// 					return value;
 					// 				}
@@ -871,7 +871,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -914,7 +914,7 @@ sap.ui.define([
 					// 			formatter: function (value) {
 					// 				if (value) {
 					// 					var oval = parseFloat(value).toFixed(2);
-					// 					return oval * 100;
+					// 					return oval ;
 					// 				} else {
 					// 					return value;
 					// 				}
@@ -957,7 +957,7 @@ sap.ui.define([
 					// 			formatter: function (value) {
 					// 				if (value) {
 					// 					var oval = parseFloat(value).toFixed(2);
-					// 					return oval * 100;
+					// 					return oval ;
 					// 				} else {
 					// 					return value;
 					// 				}
@@ -1000,7 +1000,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -1044,7 +1044,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -1084,7 +1084,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -1127,7 +1127,7 @@ sap.ui.define([
 					// 			formatter: function (value) {
 					// 				if (value) {
 					// 					var oval = parseFloat(value).toFixed(2);
-					// 					return oval * 100;
+					// 					return oval ;
 					// 				} else {
 					// 					return value;
 					// 				}
@@ -1170,7 +1170,7 @@ sap.ui.define([
 					// 			formatter: function (value) {
 					// 				if (value) {
 					// 					var oval = parseFloat(value).toFixed(2);
-					// 					return oval * 100;
+					// 					return oval ;
 					// 				} else {
 					// 					return value;
 					// 				}
@@ -1213,7 +1213,7 @@ sap.ui.define([
 					// 			formatter: function (value) {
 					// 				if (value) {
 					// 					var oval = parseFloat(value).toFixed(2);
-					// 					return oval * 100;
+					// 					return oval ;
 					// 				} else {
 					// 					return value;
 					// 				}
@@ -1235,7 +1235,7 @@ sap.ui.define([
 					// },
 					{
 
-						name: "Y810-Deconsolidation (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y810Total") + ")",
+						name: "Y810 - Deconsolidation (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y810Total") + ")",
 
 						template: {
 
@@ -1245,7 +1245,7 @@ sap.ui.define([
 
 					}, {
 
-						name: "Y810-Deconsolidation (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y810Lift") + ")",
+						name: "Y810 - Deconsolidation (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y810Lift") + ")",
 
 						template: {
 
@@ -1255,7 +1255,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -1267,7 +1267,7 @@ sap.ui.define([
 
 					}, {
 
-						name: "Y810-Deconsolidation (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y810Min") + ")",
+						name: "Y810 - Deconsolidation (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y810Min") + ")",
 
 						template: {
 							content: "{Y810Min}"
@@ -1278,7 +1278,7 @@ sap.ui.define([
 
 					{
 
-						name: "Y860 – Relabeling (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y860Total") + ")",
+						name: "Y860 - Relabeling (Total - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y860Total") + ")",
 
 						template: {
 
@@ -1288,17 +1288,15 @@ sap.ui.define([
 
 					}, {
 
-						name: "Y860 – Relabeling (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y860Lift") + ")",
+						name: "Y860 - Relabeling (Left - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y860Lift") + ")",
 
 						template: {
-
-							//content: "{Um10Lift}"
 							content: {
 								parts: ["Y860Lift"],
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -1310,7 +1308,7 @@ sap.ui.define([
 
 					}, {
 
-						name: "Y860 – Relabeling (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y860Min") + ")",
+						name: "Y860 - Relabeling (Min - " + that.getView().getModel("multiHeaderConfig").getProperty("/Y860Min") + ")",
 
 						template: {
 							content: "{Y860Min}"
@@ -1341,7 +1339,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -1384,7 +1382,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -1427,7 +1425,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -1470,7 +1468,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -1513,7 +1511,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -1556,7 +1554,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -1599,7 +1597,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
@@ -1642,7 +1640,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval; 
 									} else {
 										return value;
 									}
@@ -1688,7 +1686,7 @@ sap.ui.define([
 								formatter: function (value) {
 									if (value) {
 										var oval = parseFloat(value).toFixed(2);
-										return oval * 100;
+										return oval ;
 									} else {
 										return value;
 									}
